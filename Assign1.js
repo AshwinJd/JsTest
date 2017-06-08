@@ -6,4 +6,4 @@ for(var i=0;i<arr.length;i++){
     arrNew.push(arr[i]);
 }
 
- console.log(arrNew);
+ console.log(typeof(arrNew));
