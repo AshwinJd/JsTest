@@ -11,7 +11,10 @@ var data= {};
 
 rl.on('line', (line) => {
     c++;
+    line = line.replace(/"/g, "");
+    // console.log(line);
     var st = line.split(',');
+    
     if(c==1){
         st.map(function(item){
             dataHeader.push(item);
@@ -21,12 +24,16 @@ rl.on('line', (line) => {
     }else{
         st.map(function(item,index){
 
-            data[dataHeader[index]].push(item);
-           
+           if(index!=0){
+                temp[dataHeader[index]] = Number(item);
+            }else{
+            temp[dataHeader[index]] = item;
+            }
         });
     }
+    // console.log(data);
 
-  console.log(data);
+//   console.log(data['"Population (Millions) 2012"'][18]);
 });
 
 
