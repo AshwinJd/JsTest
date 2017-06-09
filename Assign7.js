@@ -1,12 +1,22 @@
+var log4js = require('log4js');
 const fs = require('fs');
 const readline = require('readline');
+//console log is loaded by default, so you won't normally need to do this 
+//log4js.loadAppender('console'); 
+log4js.loadAppender('file');
+//log4js.addAppender(log4js.appenders.console()); 
+log4js.addAppender(log4js.appenders.file('logs/Munging.log'), 'Munging');
+ 
+
+ 
+var logger = log4js.getLogger('Munging');
 
 
 fs.access('g20.csv', fs.constants.R_OK | fs.constants.W_OK, (err) => {
   if(err)
-  console.log('Cant access');
+  logger.error('Cant access');
   else{
-    console.log('Its Readable');
+    logger.info('Its Readable');
     var rl = readline.createInterface({
         input: fs.createReadStream('g20.csv'),
     });
@@ -14,9 +24,11 @@ fs.access('g20.csv', fs.constants.R_OK | fs.constants.W_OK, (err) => {
   }
   
 });
+
+
 var file = "data.json";
 
-
+// extract(rl);
 function extract(rl){
     var data = [];
 
@@ -47,9 +59,10 @@ function extract(rl){
 
 
     }).on('close',function(){
+        logger.info(data);
         fs.writeFile('data.json',JSON.stringify(data) , (err) => {
         if (err) throw err;
-        console.log('The file has been saved!');
+        logger.info('The File has been written.');
         });
         
     });
@@ -63,3 +76,14 @@ function extract(rl){
 
 
 
+
+
+
+// logger.setLevel('ERROR');
+ 
+// logger.trace('Entering cheese testing');
+// logger.debug('Got cheese.');
+// logger.info('Cheese is Gouda.');
+// logger.warn('Cheese is quite smelly.');
+// logger.error('Cheese is too ripe!');
+// logger.fatal('Cheese was breeding ground for listeria.');
